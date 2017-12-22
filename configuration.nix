@@ -25,7 +25,7 @@
     nameservers = [ "172.16.1.254" "8.8.8.8" ];
     interfaces = [
      { useDHCP = true; }
-     { name = "eno1"; ipAddress = "172.16.1.253"; prefixLength = 24; }
+     { name = "eno1"; ipAddress = "172.16.1.250"; prefixLength = 24; }
      { name = "eno2"; ipAddress = "192.168.1.1"; prefixLength = 16; }
     ];
     # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
