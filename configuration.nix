@@ -19,6 +19,11 @@
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
 
+  # https://github.com/NixOS/nixpkgs/issues/27788
+  boot.kernel.sysctl = {
+    "vm.max_map_count" = 262144;
+  };
+
   networking = {
     hostName = "nixos"; # Define your hostname.
     defaultGateway = "172.16.1.254";
