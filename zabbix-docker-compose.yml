@@ -1,0 +1,44 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.7
+    restart: always
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: docker
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix
+
+  zabbix-server:
+    image: zabbix/zabbix-server-mysql:alpine-3.4-latest
+    restart: always
+    volumes:
+      - ./data/zabbix:/var/lib/zabbix
+    environment:
+      DB_SERVER_HOST: mysql
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix
+    ports:
+      - "10051:10051"
+    depends_on:
+      - mysql
+
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-mysql:alpine-3.4-latest
+    restart: always
+    environment:
+      DB_SERVER_HOST: mysql
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix
+      ZBX_SERVER_HOST: zabbix-server
+      PHP_TZ: Asia/Tokyo
+    ports:
+      - "10088:80"
+    depends_on:
+      - mysql
+      - zabbix-server
