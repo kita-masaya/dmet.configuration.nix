@@ -56,7 +56,7 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    wget vim docker docker_compose openssh samba unzip git
+    wget vim docker docker_compose openssh samba unzip git gdrive
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -83,6 +83,7 @@
   services.cron.enable = true;
   services.cron.systemCronJobs = [
       "0 3  * * *   tono    cd /home/tono/mssql && ./renew_mssql_Kikan.sh 2>&1"
+      "0 8  * * *   tono    cd /home/tono/gdrive && ./sync_gdrive.sh 2>&1"
     ];
 
   # Enable CUPS to print documents.
