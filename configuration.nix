@@ -82,7 +82,7 @@
 
   services.cron.enable = true;
   services.cron.systemCronJobs = [
-      "0 3  * * *   tono    cd /home/tono/mssql && ./renew_mssql_Kikan.sh 2>&1"
+      "0 0  * * *   tono    cd /home/tono/mssql && ./renew_mssql_Kikan.sh 2>&1"
       "0 20 * * *   tono    cd /home/tono/gdrive && ./backup_redash.sh 2>&1"
       "30 3  * * *   tono    cd /home/tono/gdrive && ./sync_gdrive.sh 2>&1"
     ];
