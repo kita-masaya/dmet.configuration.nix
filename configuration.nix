@@ -39,6 +39,7 @@
       trustedInterfaces = [ "eno2" ];
       allowPing = true;
       allowedTCPPorts = [ 22 80 443 ];
+      allowedUDPPorts = [ 514 ];
     };
   };
 
@@ -85,7 +86,26 @@
       "0 0  * * *   tono    cd /home/tono/mssql && ./renew_mssql_Kikan.sh 2>&1"
       "0 20 * * *   tono    cd /home/tono/gdrive && ./backup_redash.sh 2>&1"
       "30 3  * * *   tono    cd /home/tono/gdrive && ./sync_gdrive.sh 2>&1"
+      "30 0  * * *   root    find /var/log/syslogs/ -daystart -mtime +31 -type f -delete"
+      "20 0  * * *   root    find /var/log/messages/ -daystart -mtime +31 -type f -delete"
     ];
+
+  services.syslog-ng = {
+    enable = true;
+    configHeader = ''
+      @version: 3.11
+      @include "scl.conf"
+      source s_local { system(); internal(); };
+      source s_network { udp(); };
+      destination d_local { file("/var/log/messages/''${YEAR}''${MONTH}''${DAY}" create-dirs(yes)); };
+      destination d_syslogs { file("/var/log/syslogs/''${HOST}-''${YEAR}''${MONTH}''${DAY}.log" create-dirs(yes)); };
+      destination d_errors { file("/var/log/syslog-errors"); };
+      filter f_err { level(err..emerg); };
+      log { source(s_local); destination(d_local); };
+      log { source(s_network); destination(d_syslogs); };
+      log { source(s_network); filter(f_err); destination(d_errors); };
+    '';
+  };
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
