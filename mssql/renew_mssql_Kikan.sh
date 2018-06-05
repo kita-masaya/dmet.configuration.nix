@@ -9,4 +9,4 @@ ALTER DATABASE [Kikan] SET MULTI_USER
 GO
 "
 rm -f ${BAKFILE}
-
+docker exec kikan_snap /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P MetaMeta123 -i /src/host/P_MONTHLY_SALES_LOG.sql
