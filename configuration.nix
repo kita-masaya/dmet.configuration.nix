@@ -39,7 +39,7 @@
       trustedInterfaces = [ "eno2" ];
       allowPing = true;
       allowedTCPPorts = [ 22 80 443 ];
-      allowedUDPPorts = [ 514 ];
+      allowedUDPPorts = [ 514 162 ];
     };
   };
 
